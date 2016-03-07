@@ -9,7 +9,10 @@ func TestParseIptcKeywords(t *testing.T) {
         var tests = []struct {
                 file, expected string
         }{
-                {"testdata/sample.jpg", "blackandwhite,people,street,urban,zurich"},
+                {"testdata/sample.jpg",  "new tag,sample,first,golang,iptc,sp€ciäl"},
+                {"testdata/sample2.jpg", "hällo,new tag,sample,golang,iptc,second"},
+                {"testdata/sample3.jpg", "golang,sample,føø,new tag,third,sp€ciäl,iptc"},
+                {"testdata/sample4.jpg", ""},
         }
 
         for _, c := range tests {
