@@ -1,43 +1,39 @@
-iptc
-====
+# iptc
 
 IPTC reader - Go (golang) wrapper for libiptcdata
 
-Dependencies
-============
+## Dependencies
 
-Requires libiptcdata.
+Requires `libiptcdata`.
 
 On OS X using Homebrew:
-```brew install libiptcdata```
 
-Usage
-=====
+```
+brew install libiptcdata
+```
+
+## Usage
 
 ```go
 package main
 
 import (
-	"log"
-	"os"
+        "fmt"
+        "os"
 
-	"github.com/melraidin/iptc"
+        "github.com/zidizei/iptc"
 )
 
 func main() {
-	data, err := iptc.Open(os.Args[1])
+        data, _ := iptc.Open(os.Args[1])
 
-	if err != nil {
-		log.Fatalf("Error: %s", err.Error())
-	}
-
-	log.Printf("%v\n", data)
+        fmt.Printf("%v\n", data)
 }
 ```
 
 Output:
 
 ```
-$ go run read.go resources/caption.jpg
-2014/08/14 15:01:00 map[1:map[90:[1 b   2 5   4 7]] 2:map[0:2 116:Copyright 2014. All rights reserved. 120:Processed with VSCOcam with f2 preset]]
+$ go run read.go testdata/sample.jpg
+{testdata/sample.jpg map[Headline:iptc sample CopyrightNotice:Patrick 2016 ApplicationRecordVersion:4 Keywords:new tag sample first golang iptc sp€ciäl By-line:Patrick By-lineTitle:Gopher Contact:zidizei@gmail.com Writer-Editor:Patrick CodedCharacterSet:[1 b   2 5   4 7] EnvelopeRecordVersion:4 ObjectName:Sample 1]}
 ```
