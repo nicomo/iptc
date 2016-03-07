@@ -51,3 +51,7 @@ func (d *StringEntry) GetName() string {
 func (d *StringEntry) GetID() int {
         return d.ID
 }
+
+func (d *StringEntry) String() string {
+        return strings.Join(d.Raw, " ")
+}

@@ -74,3 +74,7 @@ func (d *AudioTypeEntry) GetName() string {
 func (d *AudioTypeEntry) GetID() int {
         return d.ID
 }
+
+func (d *AudioTypeEntry) String() string {
+        return d.Value().(string)
+}

@@ -87,3 +87,7 @@ func (d *FileFormatEntry) GetName() string {
 func (d *FileFormatEntry) GetID() int {
         return d.ID
 }
+
+func (d *FileFormatEntry) String() string {
+        return d.Value().(string)
+}

@@ -56,3 +56,7 @@ func (d *NumberEntry) GetName() string {
 func (d *NumberEntry) GetID() int {
         return d.ID
 }
+
+func (d *NumberEntry) String() string {
+        return strconv.Itoa(d.Value().(int))
+}

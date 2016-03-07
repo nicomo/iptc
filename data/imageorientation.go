@@ -61,3 +61,7 @@ func (d *ImageOrientationEntry) GetName() string {
 func (d *ImageOrientationEntry) GetID() int {
         return d.ID
 }
+
+func (d *ImageOrientationEntry) String() string {
+        return d.Value().(string)
+}

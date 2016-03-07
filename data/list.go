@@ -1,5 +1,7 @@
 package data
 
+import "strings"
+
 // ListEntry contains the parsed value of an IPTC tag.
 type ListEntry struct {
         ID     int
@@ -48,4 +50,8 @@ func (d *ListEntry) GetName() string {
 // GetID returns the ListEntry's id.
 func (d *ListEntry) GetID() int {
         return d.ID
+}
+
+func (d *ListEntry) String() string {
+        return strings.Join(d.Value().([]string), " ")
 }
