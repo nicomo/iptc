@@ -32,10 +32,30 @@ var ErrNoIptcData = errors.New("no IPTC data in file %s")
 
 // IptcRecords maps IPTC record ID types to their name.
 var IptcRecords = map[int]string {
+        1:	"IPTCEnvelope",
         2:      "IPTCApplication",
 }
 
-// IptcApplicationTags maps IPTC tag IDs to their tag's name.
+// IptcEnvelopeTags maps IPTC envelope tag IDs to their tag's name.
+// See: http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/IPTC.html
+var IptcEnvelopeTags = map[int]string {
+        0:	"EnvelopeRecordVersion",
+        5:	"Destination",
+        20:	"FileFormat",
+        22:	"FileVersion",
+        30:	"ServiceIdentifier",
+        40:	"EnvelopeNumber",
+        50:	"ProductID",
+        60:	"EnvelopePriority",
+        70:	"DateSent",
+        80:	"TimeSent",
+        90:	"CodedCharacterSet",
+        100:	"UniqueObjectName",
+        120:	"ARMIdentifier",
+        122:	"ARMVersion",
+}
+
+// IptcApplicationTags maps IPTC application tag IDs to their tag's name.
 // See: http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/IPTC.html
 var IptcApplicationTags = map[int]string {
         0:      "ApplicationRecordVersion",
@@ -66,6 +86,48 @@ var IptcApplicationTags = map[int]string {
         62:     "DigitalCreationDate",
         63:     "DigitalCreationTime",
         65:     "OriginatingProgram",
+        70:	"ProgramVersion",
+        75:	"ObjectCycle",
+        80:	"By-line",
+        85:	"By-lineTitle",
+        90:	"City",
+        92:	"Sub-location",
+        95:	"Province-State",
+        100:	"Country-PrimaryLocationCode",
+        101:	"Country-PrimaryLocationName",
+        103:	"OriginalTransmissionReference",
+        105:	"Headline",
+        110:	"Credit",
+        115:	"Source",
+        116:	"CopyrightNotice",
+        118:	"Contact",
+        120:	"Caption-Abstract",
+        121:	"LocalCaption",
+        122:	"Writer-Editor",
+        125:	"RasterizedCaption",
+        130:	"ImageType",
+        131:	"ImageOrientation",
+        135:	"LanguageIdentifier",
+        150:	"AudioType",
+        151:	"AudioSamplingRate",
+        152:	"AudioSamplingResolution",
+        153:	"AudioDuration",
+        154:	"AudioOutcue",
+        184:	"JobID",
+        185:	"MasterDocumentID",
+        186:	"ShortDocumentID",
+        187:	"UniqueDocumentID",
+        188:	"OwnerID",
+        200:	"ObjectPreviewFileFormat",
+        201:	"ObjectPreviewFileVersion",
+        202:	"ObjectPreviewData",
+        221:	"Prefs",
+        225:	"ClassifyState",
+        228:	"SimilarityIndex",
+        230:	"DocumentNotes",
+        231:	"DocumentHistory",
+        232:	"ExifCameraInfo",
+        255:	"CatalogSets",
 }
 
 // Open the given path and attempts to return any IPTC data read.
