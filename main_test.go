@@ -9,16 +9,17 @@ func TestLoadIptcData(t *testing.T) {
         type Meta struct {
                 Keywords   []string
                 ObjectName string
+                ApplicationRecordVersion int
         }
 
         var tests = []struct {
                 file      string
                 expected  Meta
         }{
-                {"testdata/sample.jpg",  Meta{[]string{"new tag", "sample", "first", "golang", "iptc", "sp€ciäl"}, "Sample 1"}},
-                {"testdata/sample2.jpg", Meta{[]string{"hällo", "new tag", "sample", "golang", "iptc", "second"}, "Sample 2"}},
-                {"testdata/sample3.jpg", Meta{[]string{"golang", "sample", "føø", "new tag", "third", "sp€ciäl", "iptc"}, "Sample 3"}},
-                {"testdata/sample4.jpg", Meta{[]string{}, "Sample 4"}},
+                {"testdata/sample.jpg",  Meta{[]string{"new tag", "sample", "first", "golang", "iptc", "sp€ciäl"}, "Sample 1", 4}},
+                {"testdata/sample2.jpg", Meta{[]string{"hällo", "new tag", "sample", "golang", "iptc", "second"}, "Sample 2", 4}},
+                {"testdata/sample3.jpg", Meta{[]string{"golang", "sample", "føø", "new tag", "third", "sp€ciäl", "iptc"}, "Sample 3", 4}},
+                {"testdata/sample4.jpg", Meta{[]string{}, "Sample 4", 4}},
         }
 
         for _, c := range tests {
@@ -31,6 +32,10 @@ func TestLoadIptcData(t *testing.T) {
 
                 if actual.ObjectName != c.expected.ObjectName {
                         t.Errorf("expected [\"%s\"].ObjectName == '%s', got '%s'", c.file, c.expected.ObjectName, actual)
+                }
+
+                if actual.ApplicationRecordVersion != c.expected.ApplicationRecordVersion {
+                        t.Errorf("expected [\"%s\"].ApplicationRecordVersion == '%s', got '%s'", c.file, c.expected.ApplicationRecordVersion, actual)
                 }
 
                 if len(actual.Keywords) != len(c.expected.Keywords) {

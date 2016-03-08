@@ -30,7 +30,19 @@ type MetaData struct {
 func (d MetaData) Decode(t interface{}) error {
         decoded := make(map[string]interface{})
 
-	for k, v := range d.Entries {
+        v := reflect.Indirect(reflect.ValueOf(t))
+
+	for i := 0; i < v.NumField(); i++ {
+                k := v.Type().Field(i).Name
+                v, ok := d.Entries[k]
+
+                if ok == false {
+                        // We could not find an element named k inside
+                        // the Entries map, which means the file does not have that
+                        // particular IPTC metadata entry available.
+                        continue
+                }
+
                 switch reflect.TypeOf(v).String() {
                 case "*data.ListEntry":
                         list, err := d.ListTag(k)
@@ -57,7 +69,7 @@ func (d MetaData) Decode(t interface{}) error {
                         decoded[k] = str
 
                 }
-        }
+	}
 
         return mapstructure.Decode(decoded, t)
 }
