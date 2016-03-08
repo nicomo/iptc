@@ -14,7 +14,9 @@ import "C"
 import (
         "fmt"
         "unsafe"
+        "reflect"
 
+        "github.com/mitchellh/mapstructure"
         "github.com/zidizei/iptc/data"
 )
 
@@ -22,6 +24,42 @@ import (
 type MetaData struct {
         File       string
         Entries    map[string]data.Entry
+}
+
+// Decode the MetaData entries into the specified struct t.
+func (d MetaData) Decode(t interface{}) error {
+        decoded := make(map[string]interface{})
+
+	for k, v := range d.Entries {
+                switch reflect.TypeOf(v).String() {
+                case "*data.ListEntry":
+                        list, err := d.ListTag(k)
+                        if err != nil {
+                                continue
+                        }
+
+                        decoded[k] = list
+
+                case "*data.NumberEntry":
+                        num, err := d.NumberTag(k)
+                        if err != nil {
+                                continue
+                        }
+
+                        decoded[k] = num
+
+                default:
+                        str, err := d.StringTag(k)
+                        if err != nil {
+                                continue
+                        }
+
+                        decoded[k] = str
+
+                }
+        }
+
+        return mapstructure.Decode(decoded, t)
 }
 
 // StringTag returns the specified tag's value as a string.
@@ -90,6 +128,45 @@ func Open(file string) (MetaData, error) {
         return parsedData, nil
 }
 
+// Load the IPTC data from the specified file into the specified struct
+func Load(file string, t interface{}) error {
+        metadata, err := Open(file)
+        if err != nil {
+                return err
+        }
+
+        metadata.Decode(t)
+/*
+        err = mapstructure.Decode(metadata.Entries, t)
+        if err != nil {
+                panic(err)
+        }
+
+        v := reflect.Indirect(reflect.ValueOf(t))
+        s := reflect.ValueOf(t)
+
+        fields := make([]reflect.StructField, v.NumField())
+
+	for i := 0; i < v.NumField(); i++ {
+                fields[i] = v.Type().Field(i)
+	}
+
+        for i, f := range fields {
+                switch f.Type.String() {
+                case "string":
+                        val, err := metadata.StringTag(f.Name)
+                        if err != nil {
+                                return err
+                        }
+                        s.Field(i).SetString(val)
+                }
+        }
+
+        fmt.Println(metadata)
+        fmt.Println(fields)
+*/
+        return nil
+}
 
 // Parses an IPTC data blob generating a map of records and tags to
 // string values.

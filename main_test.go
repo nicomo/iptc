@@ -5,6 +5,41 @@ import (
         "strings"
 )
 
+func TestLoadIptcData(t *testing.T) {
+        type Meta struct {
+                Keywords   []string
+                ObjectName string
+        }
+
+        var tests = []struct {
+                file      string
+                expected  Meta
+        }{
+                {"testdata/sample.jpg",  Meta{[]string{"new tag", "sample", "first", "golang", "iptc", "sp€ciäl"}, "Sample 1"}},
+                {"testdata/sample2.jpg", Meta{[]string{"hällo", "new tag", "sample", "golang", "iptc", "second"}, "Sample 2"}},
+                {"testdata/sample3.jpg", Meta{[]string{"golang", "sample", "føø", "new tag", "third", "sp€ciäl", "iptc"}, "Sample 3"}},
+                {"testdata/sample4.jpg", Meta{[]string{}, "Sample 4"}},
+        }
+
+        for _, c := range tests {
+                actual := Meta{}
+                err    := Load(string(c.file), &actual)
+
+                if err != nil {
+                        t.Errorf("Load(%q) failed: %s", c.file, err)
+                }
+
+                if actual.ObjectName != c.expected.ObjectName {
+                        t.Errorf("expected [\"%s\"].ObjectName == '%s', got '%s'", c.file, c.expected.ObjectName, actual)
+                }
+
+                if len(actual.Keywords) != len(c.expected.Keywords) {
+                        t.Errorf("expected [\"%s\"].Keywords to contain '%d' elements, got '%d'", c.file, len(c.expected.Keywords), len(actual.Keywords))
+                }
+
+        }
+}
+
 func TestParseIptcData(t *testing.T) {
         var tests = []struct {
                 file, keyword, title string
