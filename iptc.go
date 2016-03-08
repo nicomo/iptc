@@ -147,37 +147,7 @@ func Load(file string, t interface{}) error {
                 return err
         }
 
-        metadata.Decode(t)
-/*
-        err = mapstructure.Decode(metadata.Entries, t)
-        if err != nil {
-                panic(err)
-        }
-
-        v := reflect.Indirect(reflect.ValueOf(t))
-        s := reflect.ValueOf(t)
-
-        fields := make([]reflect.StructField, v.NumField())
-
-	for i := 0; i < v.NumField(); i++ {
-                fields[i] = v.Type().Field(i)
-	}
-
-        for i, f := range fields {
-                switch f.Type.String() {
-                case "string":
-                        val, err := metadata.StringTag(f.Name)
-                        if err != nil {
-                                return err
-                        }
-                        s.Field(i).SetString(val)
-                }
-        }
-
-        fmt.Println(metadata)
-        fmt.Println(fields)
-*/
-        return nil
+        return metadata.Decode(t)
 }
 
 // Parses an IPTC data blob generating a map of records and tags to
@@ -188,7 +158,7 @@ func parseIptcData(iptcData *C.IptcData) (map[string]data.Entry) {
         for i := C.uint(0); i < iptcData.count; i++ {
                 dataSet := C.get_iptc_dataset(iptcData, i)
 
-                recordTags := IptcRecords[int(dataSet.record)]
+                recordTags := data.IptcRecords[int(dataSet.record)]
                 dataEntry  := recordTags[int(dataSet.tag)]
 
                 if _, err := parsed[dataEntry.GetName()]; err == false {

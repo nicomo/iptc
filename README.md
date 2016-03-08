@@ -4,9 +4,7 @@ IPTC reader - Go (golang) wrapper for libiptcdata
 
 ## Dependencies
 
-Requires `libiptcdata`.
-
-On OS X using Homebrew:
+Requires `libiptcdata`. On OS X using Homebrew:
 
 ```
 brew install libiptcdata
